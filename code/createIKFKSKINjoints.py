@@ -122,9 +122,13 @@ for i in ('shoulder','elbow','wrist'):
 	mc.parentConstraint('FK_' + i + '_CON',i + '_FK_JNT')
 mc.parent('FK_wrist_CON_grp','FK_elbow_CON')
 mc.parent('FK_elbow_CON_grp','FK_shoulder_CON')
+for j in ('tx','ty','tz','rx','rz','sx','sy','sz'):
+	mc.setAttr('FK_elbow_CON.'+j,l = True,k =False)
+
+
 	
 #create IK controller and IKFK switcher
-mc.file('C:\\MAYARigJS\\mayaRig\\squreAndCubeIcon.ma',i = True)
+mc.file('F:\\GitHub\\tools\\mayaRig\\squreAndCubeIcon.ma',i = True)
 mc.select('FK_wrist_CON')
 FKWristCON = mc.xform(q=True,ws=True,t=True)
 mc.select('controller')
@@ -134,7 +138,7 @@ mc.group('IK_Wrist_CON',n = 'IK_Wrist_CON_grp')
 mc.xform(ws=True,t=(FKWristCON[0],FKWristCON[1],FKWristCON[2]))
 mc.parent('ArmIKhandle','IK_Wrist_CON') 
 
-mc.file('C:\\MAYARigJS\\mayaRig\\squreAndCubeIcon.ma',i = True)
+mc.file('F:\\GitHub\\tools\\mayaRig\\squreAndCubeIcon.ma',i = True)
 mc.select('controller')
 mc.rename('controller','IKFKSwitch')
 mc.group('IKFKSwitch',n = 'IKFKSwitch_grp')
@@ -144,35 +148,8 @@ mc.parent('IKFKSwitch_grp','wrist_SKIN_JNT')
 mc.select('IKFKSwitch')
 mc.addAttr(ln = 'IKFKTrigger',at= 'enum',en = 'IK:FK',k=True)
 
-#mc.setAttr("IKFKSwitch.IKFKTrigger" ,0)
-triggerState = mc.getAttr("IKFKSwitch.IKFKTrigger")
-if triggerState == 1:
-	mc.setAttr ("elbow_SKIN_JNT_parentConstraint1.elbow_IK_JNTW1" ,0)
-	mc.setAttr ("elbow_SKIN_JNT_parentConstraint1.elbow_FK_JNTW0" ,1)
-	mc.setAttr ("shoulder_SKIN_JNT_parentConstraint1.shoulder_IK_JNTW1" ,0)
-	mc.setAttr ("shoulder_SKIN_JNT_parentConstraint1.shoulder_FK_JNTW0" ,1)	
-	mc.setAttr ("wrist_SKIN_JNT_parentConstraint1.wrist_IK_JNTW1" ,0)
-	mc.setAttr ("wrist_SKIN_JNT_parentConstraint1.wrist_FK_JNTW0" ,1)
-	mc.setAttr('FK_shoulder_CON.visibility',1)
-	mc.setAttr('FK_elbow_CON.visibility',1)
-	mc.setAttr('FK_wrist_CON.visibility',1)
-	mc.setAttr('IK_Wrist_CON.visibility',0)
-	mc.setAttr('Pole_CON.visibility',0)
-elif triggerState == 0:
-	mc.setAttr ("elbow_SKIN_JNT_parentConstraint1.elbow_IK_JNTW1" ,1)
-	mc.setAttr ("elbow_SKIN_JNT_parentConstraint1.elbow_FK_JNTW0" ,0)
-	mc.setAttr ("shoulder_SKIN_JNT_parentConstraint1.shoulder_IK_JNTW1" ,1)
-	mc.setAttr ("shoulder_SKIN_JNT_parentConstraint1.shoulder_FK_JNTW0" ,0)	
-	mc.setAttr ("wrist_SKIN_JNT_parentConstraint1.wrist_IK_JNTW1" ,1)
-	mc.setAttr ("wrist_SKIN_JNT_parentConstraint1.wrist_FK_JNTW0" ,0)	
-	mc.setAttr('FK_shoulder_CON.visibility',0)
-	mc.setAttr('FK_elbow_CON.visibility',0)
-	mc.setAttr('FK_wrist_CON.visibility',0)
-	mc.setAttr('IK_Wrist_CON.visibility',1)
-	mc.setAttr('Pole_CON.visibility',1)
-
 #create pole controller
-mc.file('C:\\MAYARigJS\\mayaRig\\squreAndCubeIcon.ma',i = True)
+mc.file('F:\\GitHub\\tools\\mayaRig\\squreAndCubeIcon.ma',i = True)
 mc.select('elbow_FK_JNT')
 FKElbowPos = mc.xform(q=True,ws=True,t=True)
 mc.select('controller')
@@ -183,7 +160,89 @@ mc.xform(ws=True,t=(FKElbowPos[0],FKElbowPos[1],FKElbowPos[2]-2))
 mc.poleVectorConstraint('Pole_CON','ArmIKhandle') 
 
 #add IKFK seamless switch
+mc.select('Pole_CON')
+PoleCON = mc.xform(q=True,ws=True,t=True)
 mc.spaceLocator(n = 'fkPole')
+mc.scale(0.5,0.5,0.5)
+mc.group('fkPole',n = 'fkPole_grp')
+mc.xform(ws=True,t=(PoleCON[0],PoleCON[1],PoleCON[2]))
+mc.parent('fkPole_grp','FK_elbow_CON')
+
+
+################################################################################
+
+triggerState = mc.getAttr("IKFKSwitch.IKFKTrigger")
+if triggerState == 1:
+	mc.setAttr ("elbow_SKIN_JNT_parentConstraint1.elbow_IK_JNTW1" ,0)
+	mc.setAttr ("elbow_SKIN_JNT_parentConstraint1.elbow_FK_JNTW0" ,1)
+	mc.setAttr ("shoulder_SKIN_JNT_parentConstraint1.shoulder_IK_JNTW1" ,0)
+	mc.setAttr ("shoulder_SKIN_JNT_parentConstraint1.shoulder_FK_JNTW0" ,1)	
+	mc.setAttr ("wrist_SKIN_JNT_parentConstraint1.wrist_IK_JNTW1" ,0)
+	mc.setAttr ("wrist_SKIN_JNT_parentConstraint1.wrist_FK_JNTW0" ,1)
+	'''
+	mc.setAttr('FK_shoulder_CON.visibility',1)
+	mc.setAttr('FK_elbow_CON.visibility',1)
+	mc.setAttr('FK_wrist_CON.visibility',1)
+	mc.setAttr('IK_Wrist_CON.visibility',0)
+	mc.setAttr('Pole_CON.visibility',0)
+	'''
+	mc.select('shoulder_IK_JNT')
+	shoulder_IK_RO = mc.xform(q=True,ws=True,ro=True)
+	mc.select('FK_shoulder_CON')
+	mc.xform(ws=True,ro=(shoulder_IK_RO[0],shoulder_IK_RO[1],shoulder_IK_RO[2]))
+
+	mc.select('elbow_IK_JNT')
+	elbow_IK_RO = mc.xform(q=True,ws=True,ro=True)
+	mc.select('FK_elbow_CON')
+	mc.xform(ws=True,ro=(elbow_IK_RO[0],elbow_IK_RO[1],elbow_IK_RO[2]))
+    
+	mc.select('wrist_IK_JNT')
+	wrist_IK_RO = mc.xform(q=True,ws=True,ro=True)
+	wrist_IK_T = mc.xform(q=True,ws=True,t=True)
+	mc.select('FK_wrist_CON')
+	mc.xform(ws=True,ro=(wrist_IK_RO[0],wrist_IK_RO[1],wrist_IK_RO[2]))
+	mc.xform(ws=True,t=(wrist_IK_T[0],wrist_IK_T[1],wrist_IK_T[2]))
+    
+	mc.select('Pole_CON')
+	Pole_CON_T = mc.xform(q=True,ws=True,t=True)
+	#Pole_CON_RO = mc.xform(q=True,ws=True,ro=True)
+    
+	mc.select('fkPole')
+	mc.xform(ws=True,t=(Pole_CON_T[0],Pole_CON_T[1],Pole_CON_T[2]))
+	#mc.xform(ws=True,ro=(Pole_CON_RO[0],Pole_CON_RO[1],Pole_CON_RO[2]))
+
+	
+elif triggerState == 0:
+	mc.setAttr ("elbow_SKIN_JNT_parentConstraint1.elbow_IK_JNTW1" ,1)
+	mc.setAttr ("elbow_SKIN_JNT_parentConstraint1.elbow_FK_JNTW0" ,0)
+	mc.setAttr ("shoulder_SKIN_JNT_parentConstraint1.shoulder_IK_JNTW1" ,1)
+	mc.setAttr ("shoulder_SKIN_JNT_parentConstraint1.shoulder_FK_JNTW0" ,0)	
+	mc.setAttr ("wrist_SKIN_JNT_parentConstraint1.wrist_IK_JNTW1" ,1)
+	mc.setAttr ("wrist_SKIN_JNT_parentConstraint1.wrist_FK_JNTW0" ,0)	
+	'''
+	mc.setAttr('FK_shoulder_CON.visibility',0)
+	mc.setAttr('FK_elbow_CON.visibility',0)
+	mc.setAttr('FK_wrist_CON.visibility',0)
+	mc.setAttr('IK_Wrist_CON.visibility',1)
+	mc.setAttr('Pole_CON.visibility',1)
+	'''
+	
+	mc.select('FK_wrist_CON')
+	FK_wristP= mc.xform(q=True,ws=True,t=True)
+	FK_wristRO= mc.xform(q=True,ws=True,ro=True)	
+	mc.select('IK_Wrist_CON')
+	mc.xform(ws=True,t=(FK_wristP[0],FK_wristP[1],FK_wristP[2]))
+	mc.xform(ws=True,ro=(FK_wristRO[0],FK_wristRO[1],FK_wristRO[2]))	
+	mc.select('fkPole')
+	fkPoleT=mc.xform(q=True,ws=True,t=True)
+	fkPoleRO=mc.xform(q=True,ws=True,ro=True)	
+	mc.select('Pole_CON')
+	mc.xform(ws=True,t=(fkPoleT[0],fkPoleT[1],fkPoleT[2]))
+	mc.xform(ws=True,ro=(fkPoleRO[0],fkPoleRO[1],fkPoleRO[2]))
+
+###################################################################################
+
+
 
 
 
