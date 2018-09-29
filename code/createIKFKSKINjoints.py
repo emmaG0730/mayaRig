@@ -1,8 +1,9 @@
 import maya.cmds as mc
 
-mc.select( all=True )
-mc.delete()
+#mc.select( all=True )
+#mc.delete()
 
+#create advance twist joints
 curveName = 'advancedCurve1'
 for each in range(5):
 	mc.joint( p = (each,0,0))
@@ -55,47 +56,53 @@ for each in range(5):
 	mc.expression(o='advanced_' + str(each+1) + '_JNT',s = 'scaleX=curveInfo1.arcLength/4')
 
 #create IK FK SKIN joints
-mc.select( clear=True )		
-shouder_FK = mc.joint(n = 'shoulder_FK_JNT')
-mc.joint(shouder_FK,e = True,p = (0,0,5), rad = 0.5,oj='xyz',sao  ='yup')
-elbow_FK = mc.joint(n = 'elbow_FK_JNT')
-mc.joint(elbow_FK,e = True,p = (4,0,5), rad = 0.5,oj='xyz',sao  ='yup')
-wrist_FK = mc.joint(n = 'wrist_FK_JNT')
-mc.joint(wrist_FK,e = True,p = (8,0,5), rad = 0.5,oj='xyz',sao  ='yup')
-mc.select(shouder_FK,elbow_FK,wrist_FK)
-mc.createDisplayLayer(noRecurse=True,n = 'FK_Layer')
-mc.setAttr('FK_Layer.color', 13)
-
-mc.select( clear=True )
-shouder_IK = mc.joint(n = 'shoulder_IK_JNT')
-mc.joint(shouder_IK,p = (0,0,5),e =True, rad = 0.5,oj='xyz',sao  ='yup')
-elbow_IK = mc.joint(n = 'elbow_IK_JNT')
-mc.joint(elbow_IK,p = (4,0,5),e =True,rad = 0.5,oj='xyz',sao  ='yup')
-wrist_IK = mc.joint(n = 'wrist_IK_JNT')
-mc.joint(wrist_IK,p = (8,0,5),e =True, rad = 0.5,oj='xyz',sao  ='yup')
-mc.rotate(0,'-30deg',0,'elbow_IK_JNT')
-mc.select(elbow_IK)
-mc.joint(e= True,spa = True,ch = True)
-mc.ikHandle( sj='shoulder_IK_JNT', ee='wrist_IK_JNT',sol = 'ikRPsolver')
-mc.rename('ikHandle1','ArmIKhandle')
-mc.rotate(0,0,0,'elbow_IK_JNT')
-mc.select(shouder_IK,elbow_IK,wrist_IK)
-mc.createDisplayLayer(noRecurse=True,n = 'IK_Layer')
-mc.setAttr('IK_Layer.color', 6)
-
-mc.select(clear=True)
-shouder_SKIN = mc.joint(n = 'shoulder_SKIN_JNT')
-mc.joint(shouder_SKIN,e = True,p = (0,0,5), rad = 0.5,oj='xyz',sao  ='yup')
-elbow_SKIN = mc.joint(n = 'elbow_SKIN_JNT',p = (4,0,0), rad = 0.5,oj='xyz',sao  ='yup')
-mc.joint(elbow_SKIN,e = True,p = (4,0,5), rad = 0.5,oj='xyz',sao  ='yup')
-wrist_SKIN = mc.joint(n = 'wrist_SKIN_JNT',p = (8,0,0), rad = 0.5,oj='xyz',sao  ='yup')
-mc.joint(wrist_SKIN,e = True,p = (8,0,5), rad = 0.5,oj='xyz',sao  ='yup')
-mc.select(shouder_SKIN,elbow_SKIN,wrist_SKIN)
-mc.createDisplayLayer(noRecurse=True,n = 'SKIN_Layer')
-
-mc.parentConstraint('shoulder_FK_JNT','shoulder_IK_JNT', 'shoulder_SKIN_JNT')
-mc.parentConstraint('elbow_FK_JNT','elbow_IK_JNT','elbow_SKIN_JNT')
-mc.parentConstraint('wrist_FK_JNT','wrist_IK_JNT','wrist_SKIN_JNT')
+def baseJNTCreation():
+	#get locator transform
+	shoulderLTransform = mc.getAttr('ShoulderLeftLoc.t')
+	elbowLTransform = mc.getAttr('ElbowLoc.t')
+	wristLTransform = mc.getAttr('WristLoc.t')
+	#FK
+	mc.select( clear=True )		
+	shouder_FK = mc.joint(n = 'shoulder_FK_JNT')
+	mc.joint(shouder_FK,e = True,p = shoulderLTransform[0], rad = 0.5,oj='xyz',sao  ='yup')
+	elbow_FK = mc.joint(n = 'elbow_FK_JNT')
+	mc.joint(elbow_FK,e = True,p = elbowLTransform[0], rad = 0.5,oj='xyz',sao  ='yup')
+	wrist_FK = mc.joint(n = 'wrist_FK_JNT')
+	mc.joint(wrist_FK,e = True,p = wristLTransform[0], rad = 0.5,oj='xyz',sao  ='yup')
+	mc.select(shouder_FK,elbow_FK,wrist_FK)
+	mc.createDisplayLayer(noRecurse=True,n = 'FK_Layer')
+	mc.setAttr('FK_Layer.color', 13)
+	#IK
+	mc.select( clear=True )
+	shouder_IK = mc.joint(n = 'shoulder_IK_JNT')
+	mc.joint(shouder_IK,p = shoulderLTransform[0],e =True, rad = 0.5,oj='xyz',sao  ='yup')
+	elbow_IK = mc.joint(n = 'elbow_IK_JNT')
+	mc.joint(elbow_IK,p = elbowLTransform[0],e =True,rad = 0.5,oj='xyz',sao  ='yup')
+	wrist_IK = mc.joint(n = 'wrist_IK_JNT')
+	mc.joint(wrist_IK,p = wristLTransform[0],e =True, rad = 0.5,oj='xyz',sao  ='yup')
+	mc.rotate(0,'-30deg',0,'elbow_IK_JNT')
+	mc.select(elbow_IK)
+	mc.joint(e= True,spa = True,ch = True)
+	mc.ikHandle( sj='shoulder_IK_JNT', ee='wrist_IK_JNT',sol = 'ikRPsolver')
+	mc.rename('ikHandle1','ArmIKhandle')
+	mc.rotate(0,0,0,'elbow_IK_JNT')
+	mc.select(shouder_IK,elbow_IK,wrist_IK)
+	mc.createDisplayLayer(noRecurse=True,n = 'IK_Layer')
+	mc.setAttr('IK_Layer.color', 6)
+	#SKIN
+	mc.select(clear=True)
+	shouder_SKIN = mc.joint(n = 'shoulder_SKIN_JNT')
+	mc.joint(shouder_SKIN,e = True,p = shoulderLTransform[0], rad = 0.5,oj='xyz',sao  ='yup')
+	elbow_SKIN = mc.joint(n = 'elbow_SKIN_JNT')
+	mc.joint(elbow_SKIN,e = True,p = elbowLTransform[0], rad = 0.5,oj='xyz',sao  ='yup')
+	wrist_SKIN = mc.joint(n = 'wrist_SKIN_JNT')
+	mc.joint(wrist_SKIN,e = True,p = wristLTransform[0], rad = 0.5,oj='xyz',sao  ='yup')
+	mc.select(shouder_SKIN,elbow_SKIN,wrist_SKIN)
+	mc.createDisplayLayer(noRecurse=True,n = 'SKIN_Layer')
+	
+	mc.parentConstraint('shoulder_FK_JNT','shoulder_IK_JNT', 'shoulder_SKIN_JNT')
+	mc.parentConstraint('elbow_FK_JNT','elbow_IK_JNT','elbow_SKIN_JNT')
+	mc.parentConstraint('wrist_FK_JNT','wrist_IK_JNT','wrist_SKIN_JNT')
 
 #attach advaneced twist to base arm joints and constraint
 mc.select(shouder_SKIN)
@@ -243,13 +250,13 @@ elif triggerState == 0:
 ###################################################################################
 
 
-
-
-
-
-
-
-
+#hand
+mc.select('wrist_SKIN_JNT')
+skinWirstPos = mc.xform(q=True,ws=True,t=True)
+mc.joint(n = 'hand',p=(skinWirstPos[0],skinWirstPos[1],skinWirstPos[2]),rad = 0.6)
+mc.spaceLocator(n = 'hand_Loc')
+mc.move(skinWirstPos[0],skinWirstPos[1],skinWirstPos[2])
+handLocPos = mc.xform(q=True,ws=True,t=True)
 
 
 
