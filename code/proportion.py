@@ -73,7 +73,7 @@ def createLoc():
 	
 	mc.spaceLocator(n = 'MiddleFingerSecondLoc')
 	fingerEnd = mc.getAttr('MiddleFingerEndLoc.tx')
-	middleFingerMidLoc = mc.getAttr('MiddleFingerMidLoc.tx'
+	middleFingerMidLoc = mc.getAttr('MiddleFingerMidLoc.tx')
 	halfmiddleSecondFinger = middleFingerMidLoc + (fingerEnd - middleFingerMidLoc)*0.5
 	mc.move(halfmiddleSecondFinger,head*6.5,0)
 	mc.scale(0.05,0.05,0.05)
