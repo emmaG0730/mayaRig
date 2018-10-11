@@ -1,9 +1,7 @@
 import maya.cmds as mc
 
-#mc.select( all=True )
-#mc.delete()
-
 #create advance twist joints
+mc.select( clear=True )
 curveName = 'advancedCurve1'
 for each in range(5):
 	mc.joint( p = (each,0,0))
@@ -51,13 +49,15 @@ mc.parent('joint1Aim','joint1Con')
 
 #stretch joint
 mc.select(curveName)
+mc.setAttr(curveName + '.inheritsTransform',0)
 mc.arclen(curveName,ch = True)
 for each in range(5):		
 	mc.expression(o='advanced_' + str(each+1) + '_JNT',s = 'scaleX=curveInfo1.arcLength/4')
 
 
-
-
+#group all(
+mc.group('advanced_1_JNT','advancedCurve1','TwistIKhandle','Start','End','joint1Con',
+			'cluster1Handle','cluster2Handle',n = 'AdvancedTwistGrp')
 
 
 

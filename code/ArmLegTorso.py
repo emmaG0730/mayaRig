@@ -36,9 +36,9 @@ for each in ('Pinkie','Ring','Middle','Index'):
 		LT = mc.xform(q  =True,t = True,ws = True)
 		FingerList.append(LT)				
 	mc.select(clear=True)
-	mc.joint( n = each+'Left0',p=(FingerList[0][0],FingerList[0][1],FingerList[0][2]), rad = 0.2)
+	mc.joint( n = each+'Left0',p=(FingerList[0][0],FingerList[0][1],FingerList[0][2]), rad = 0.1)
 	for i in range(1,4):
-		mc.joint(n = each+'Left'+str(i),p = (FingerList[i][0],FingerList[i][1],FingerList[i][2]), rad = 0.2)
+		mc.joint(n = each+'Left'+str(i),p = (FingerList[i][0],FingerList[i][1],FingerList[i][2]), rad = 0.1)
 		mc.joint(each+'Left'+ str(i-1),e= True, zso = True,oj='xyz',sao  ='yup')
 	FingerList=[]
 	
@@ -48,24 +48,23 @@ for i in range(3):
 	ThumbLT = mc.xform(q  =True,t = True,ws = True)
 	FingerList.append(ThumbLT)
 mc.select(clear=True)
-mc.joint( n = 'ThumbLeft0',p=(FingerList[0][0],FingerList[0][1],FingerList[0][2]), rad = 0.2)
+mc.joint( n = 'ThumbLeft0',p=(FingerList[0][0],FingerList[0][1],FingerList[0][2]), rad = 0.1)
 for i in range(1,3):
-	mc.joint(n = 'ThumbLeft'+str(i),p = (FingerList[i][0],FingerList[i][1],FingerList[i][2]), rad = 0.2)
+	mc.joint(n = 'ThumbLeft'+str(i),p = (FingerList[i][0],FingerList[i][1],FingerList[i][2]), rad = 0.1)
 	mc.joint('ThumbLeft'+str(i-1),e= True, zso = True,oj='xyz',sao  ='yup')
 FingerList=[]
 
 #create hand
 mc.select(clear=True)
-wirstT = mc.xform('Wrist_SkinJNT',q = True,t = True,ws = True)
+wirstT = mc.xform('WristLeft_SkinJNT',q = True,t = True,ws = True)
 mc.joint( p = (wirstT[0],wirstT[1],wirstT[2]))
-mc.joint(n = 'LeftHand',e= True, zso = True,oj='xyz',sao  ='yup', rad = 0.3)
+mc.joint(n = 'LeftHand',e= True, zso = True,oj='xyz',sao  ='yup', rad = 0.2)
 for each in ('ThumbLeft0','PinkieLeft0','RingLeft0','MiddleLeft0','IndexLeft0'):	
 	mc.parent(each,'LeftHand')
 for each in ('Wrist_FK_JNT','Wrist_FK_JNT','Wrist_FK_JNT'):  
 	mc.pointConstraint(each ,'LeftHand')
 	mc.orientConstraint(each ,'LeftHand')
-for each in ('shoulder'	
-mc.parent(,'Spine3_FK_JNT')
+
 	
 	
 	
