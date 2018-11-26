@@ -3,25 +3,34 @@ import maya.cmds as mc
 def createLoc():
 	head= 2
 	mc.spaceLocator(n = 'FootLeftLoc')
-	mc.scale(0.6,0.6,0.6)
-	mc.move(1,0,0)
+	mc.scale(0.3,0.3,0.3)
+	mc.move(1,0,1)
 	mc.color(rgb=(0,0,1))
+	
+	mc.spaceLocator(n = 'ToeLeftLoc')
+	mc.scale(0.2,0.2,0.2)
+	mc.move(1,0,2)
+	mc.color(rgb=(0,0,1))
+	mc.parent('ToeLeftLoc','FootLeftLoc')
 	
 	mc.spaceLocator(n = 'AnkleLeftLoc')
 	mc.move(1,head*0.5,0)
 	mc.scale(0.2,0.2,0.2)
 	mc.color(rgb=(0.5,0,0))
+	mc.parent('FootLeftLoc','AnkleLeftLoc')
 	
 	mc.spaceLocator(n = 'KneeLeftLoc')
 	mc.move(1,head*2,0)
 	mc.scale(0.3,0.3,0.3)
 	mc.color(rgb=(0.5,0.2,0))
+	mc.parent('AnkleLeftLoc' ,  'KneeLeftLoc')
 	
 	mc.spaceLocator(n = 'ThighLeftLoc')
 	mc.move(1,head*4,0)
 	mc.scale(0.4,0.4,0.4)
 	mc.color(rgb=(0.5,0.2,0.5))
-	
+	mc.parent('KneeLeftLoc' ,'ThighLeftLoc')
+		
 	mc.spaceLocator(n = 'NeckLoc')
 	mc.move(0,head*6.5,0)
 	mc.scale(0.2,0.2,0.2)
@@ -56,6 +65,11 @@ def createLoc():
 	mc.move(head,head*6.5,0)
 	mc.scale(0.2,0.2,0.2)
 	mc.color(rgb=(0,0.2,0.5))
+	
+	mc.spaceLocator(n = 'ClavicleLoc')
+	mc.move(head*0.3,head*6.6,0)
+	mc.scale(0.2,0.2,0.2)
+	mc.color(rgb=(0,0.2,0.5))
 		
 	mc.spaceLocator(n = 'ElbowLeftLoc')
 	mc.move(head*2.5,head*6.5,0)
@@ -66,7 +80,7 @@ def createLoc():
 	mc.move(head*3.7,head*6.5,0)
 	mc.scale(0.2,0.2,0.2)
 	mc.color(rgb=(0,0.2,0.5))
-	
+		
 	mc.spaceLocator(n = 'IndexLeftLoc3')
 	mc.move(head*4.4,head*6.5,0)
 	mc.scale(0.1,0.1,0.1)
@@ -135,7 +149,10 @@ def createLoc():
 		for i in range(1,4):
 			mc.parent(each + 'Loc' +  str(4-i),each + 'Loc' +  str(3-i) )
 
-		
+	mc.parent('WristLeftLoc' ,'ElbowLeftLoc')
+	mc.parent('ElbowLeftLoc','ShoulderLeftLoc')
+	for each in ('MiddleLeftLoc0','IndexLeftLoc0','ThumbLeftLoc0','RingLeftLoc0','PinkieLeftLoc0'):
+		mc.parent(each,'WristLeftLoc')
 createLoc()
 
 
