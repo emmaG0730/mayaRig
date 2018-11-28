@@ -12,7 +12,7 @@ for ctrl in controllers:
 		attrs = cmds.listAttr(k=True,u=True)
 		#print ctrl
 		#print attrs
-		ctrl_attr[ctrl] = attrs
+		ctrl_attr[ctrl] = {}
 
 		if attrs != None:
 			for attr in attrs:
@@ -20,7 +20,7 @@ for ctrl in controllers:
 					value = mc.getAttr(ctrl + '.' + attr)						
 					print value
 					print attr
-					#attr_value[attr] = value
+					actrl_attr[ctrl][attr] = value
 				except:
 					pass
 
