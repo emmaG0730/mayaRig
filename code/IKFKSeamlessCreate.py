@@ -1,6 +1,7 @@
 import maya.cmds as mc
 
 class ArmCreation(object):
+	
 	def __init__(self,jointAmounts):
 		self.ArmWin = 'AdvancedArmCreation'
 		self.title =  'ArmTwist'
@@ -75,5 +76,5 @@ class ArmCreation(object):
 		mc.delete( all=True, e=True )
 		for each in range(jointAmounts):		
 			mc.expression(o='advanced_' + str(each+1) + '_JNT',s = 'scaleX=curveInfo1.arcLength/'+'jointAmounts-1')
-a= ArmCreation()
+a = ArmCreation()
 a.createUI()
