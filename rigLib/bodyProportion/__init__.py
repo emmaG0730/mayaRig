@@ -1,2 +1,0 @@
-import point
-import bindJoints
