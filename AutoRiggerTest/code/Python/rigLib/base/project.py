@@ -2,14 +2,20 @@
 main project file with central variables
 """
 
+import os
 
+def listDirection():
 
+    relativeDir = __file__
 
-bodyCurvePath = 'F:\\GitHub\\tools\\mayaRig\\AutoRiggerTest\\asset\\body_curve.ma'
+    dirList = relativeDir.split('\\')[:-5]
 
-pointPath = 'F:\\GitHub\\tools\\mayaRig\\AutoRiggerTest\\asset\\pointer.ma'
+    headDir =  '\\'.join(dirList)
 
+    bodyCurvePath = headDir + '\\asset\\body_curve.ma'
+    pointPath = headDir + '\\asset\\pointer.ma'
 
+    return bodyCurvePath, pointPath
 
 bodyCurves = ['arm_R_','leg_R_','head_','spine_','thumb_R_','index_R_','middle_R_','ring_R_','pinky_R_']
 

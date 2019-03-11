@@ -2,8 +2,10 @@ import maya.cmds as mc
 from ..base import module
 from ..base import project
 
-bodyCurvePath = project.bodyCurvePath
-pointPath = project.pointPath
+pathSet = project.listDirection()
+
+bodyCurvePath = pathSet[0]  
+pointPath = pathSet[1]
 
 class Pointer():
 
