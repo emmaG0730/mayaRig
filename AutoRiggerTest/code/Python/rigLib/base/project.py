@@ -2,8 +2,12 @@
 main project file with central variables
 """
 
-bodyCurvePath = 'C:\\AutoRiggerTest\\asset\\body_curve.ma'
-pointPath = 'C:\\AutoRiggerTest\\asset\\pointer.ma'
+
+
+
+bodyCurvePath = 'F:\\GitHub\\tools\\mayaRig\\AutoRiggerTest\\asset\\body_curve.ma'
+
+pointPath = 'F:\\GitHub\\tools\\mayaRig\\AutoRiggerTest\\asset\\pointer.ma'
 
 
 
