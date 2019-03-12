@@ -3,15 +3,18 @@ remove suffix and prefix
 '''
 
 def removeSuffix(name):
-    tempName = name.split('_')[:-1]
-    newName = '_'.join(tempName)
+    tempList = name.split('_')[:-1]
+    newName = '_'.join(tempList)
     return newName
 
 def removePrefix(name):
-    tempName = name.split('_')[1:]
+    tempList = name.split('_')[1:]
     newName = '_'.join(tempName)
     return newName
 
-def insertLetters(name, index):
-    pass
+def insertLetters(name, index, obj):
+    tempList = name.split('_')
+    tempList.insert(index, obj)
+    newName = '_'.join(tempList)
+    return newName
     

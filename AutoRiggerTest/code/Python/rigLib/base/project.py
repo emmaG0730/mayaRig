@@ -2,20 +2,26 @@
 main project file with central variables
 """
 
-import os
 
 def listDirection():
 
     relativeDir = __file__
 
+    print 'relativeDir : ' + str(relativeDir)
+
     dirList = relativeDir.split('\\')[:-5]
 
     headDir =  '\\'.join(dirList)
 
-    bodyCurvePath = headDir + '\\asset\\body_curve.ma'
-    pointPath = headDir + '\\asset\\pointer.ma'
+    return headDir
 
-    return bodyCurvePath, pointPath
+
+
+bodyCurvePath = listDirection() + '\\asset\\body_curve.ma'
+pointPath = listDirection() + '\\asset\\pointer.ma'
+poleCtrl = listDirection() + '\\asset\\poleControl.ma'
+
+
 
 bodyCurves = ['arm_R_','leg_R_','head_','spine_','thumb_R_','index_R_','middle_R_','ring_R_','pinky_R_']
 
