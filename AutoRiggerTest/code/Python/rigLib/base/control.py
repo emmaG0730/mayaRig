@@ -3,6 +3,7 @@ module for making rig controls
 """
 
 import maya.cmds as mc
+from .base import project
 
 class Control():
     
@@ -17,7 +18,8 @@ class Control():
                  translateTo = '',
                  rotateTo = '',
                  parent = '',
-                 lockChannels = ['s','v']
+                 lockChannels = ['s','v'],
+                 isImport = False,
                  ):
         
         """
@@ -31,13 +33,23 @@ class Control():
         @return: None
         """
 
-        ctrlObject = mc.circle( n = prefix + '_ctl', ch = 1, normal = [1,0,0], radius = scale )[0]
+        if isImport == False:
+
+            ctrlObject = mc.circle( n = prefix + '_ctl', ch = 1, normal = [1,0,0], radius = scale )[0]           
+            ctrlOffset = mc.group( n = prefix + 'Offset_grp', em = 1 )
+
+        else:
+
+            importedFile = mc.file( project.poleCtrl , i = 1, rnn = 1)[2]
             
-        ctrlOffset = mc.group( n = prefix + 'Offset_grp', em = 1 )
+            ctrlObject =  mc.rename(importedFile, prefix + '_ctl')
+            ctrlOffset = mc.group( n = 'poleCtrl_Offset_grp', em = 1 )
+
         mc.parent( ctrlObject, ctrlOffset )
         
         # color control
         ctrlShapes = mc.listRelatives( ctrlObject, s = 1 )
+
         [ mc.setAttr( s + '.ove', 1 ) for s in ctrlShapes ]
         
         if prefix.startswith( 'l_' ):

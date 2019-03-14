@@ -7,6 +7,8 @@ from . import control
 
 sceneObjectType = 'rig'
 
+
+
 class Base():
     
     """
@@ -79,6 +81,7 @@ class Base():
         self.curveGrp = mc.group( n = 'curves_grp', em = 1, p = self.builderGrp )
         self.pointGrp = mc.group( n = 'points_grp', em = 1, p = self.builderGrp )
         self.locatorGrp = mc.group( n = 'locators_grp', em = 1, p = self.builderGrp )
+        self.ctrlJointsGrp = mc.group( n = 'ctrlJoints_grp', em = 1, p = self.builderGrp )
 
         mc.setAttr( self.builderGrp + '.it', 0, l = 1 )
         
